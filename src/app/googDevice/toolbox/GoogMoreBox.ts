@@ -238,6 +238,25 @@ export class GoogMoreBox {
         player.on('video-view-resize', this.onViewVideoResize);
         player.on('video-settings', this.onVideoSettings);
         this.holder = moreBox;
+        
+        // 自动设置默认参数
+        setTimeout(() => {
+            console.log('自动设置默认参数并应用');
+            this.fit();
+            if (this.maxFpsInput) {
+                this.maxFpsInput.value = '30';
+            }
+            if (this.bitrateInput) {
+                this.bitrateInput.value = '4340032';
+            }
+            // 找到TYPE_CHANGE_STREAM_PARAMETERS对应的按钮并触发点击
+            const changeStreamParamsBtn = Array.from(moreBox.querySelectorAll('button')).find(
+                btn => btn.innerText === CommandControlMessage.Commands.get(ControlMessage.TYPE_CHANGE_STREAM_PARAMETERS)
+            );
+            if (changeStreamParamsBtn) {
+                changeStreamParamsBtn.click();
+            }
+        }, 800); // 延迟800ms确保UI已完全加载
     }
 
     private onViewVideoResize = (size: Size): void => {
